@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: tareas
+    ports:
+      - "5432:5432" # Opcional: Expone la BD por si quieres conectarte con DBeaver/PgAdmin
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Persistencia de datos
+
+  web:
+    build: . # Construye usando el Dockerfile de esta carpeta
+    ports:
+      - "8080:8080" # Expone la web en tu navegador
+    depends_on:
+      - db # Asegura que la BD intente arrancar primero
+
+volumes:
+  pgdata: # Crea un volumen para que los datos no se borren si apagas Docker

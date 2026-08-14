@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monolito Go - CRUD</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 500px; margin: 40px auto; padding: 20px; }
+        input { padding: 10px; width: 70%; }
+        button { padding: 10px; cursor: pointer; }
+        ul { list-style: none; padding: 0; }
+        li { display: flex; justify-content: space-between; padding: 10px; background: #f4f4f4; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+    <h2>Mis Tareas</h2>
+    
+    <div>
+        <input type="text" id="taskTitle" placeholder="Escribe una tarea...">
+        <button onclick="createTask()">Añadir</button>
+    </div>
+
+    <ul id="taskList"></ul>
+
+    <script>
+        const API_URL = '/api/tasks';
+
+        // READ (Cargar tareas al iniciar)
+        async function loadTasks() {
+            const res = await fetch(API_URL);
+            const tasks = await res.json() || [];
+            const list = document.getElementById('taskList');
+            list.innerHTML = '';
+            
+            tasks.forEach(task => {
+                list.innerHTML += `
+                    <li>
+                        <span>${task.title}</span>
+                        <div>
+                            <button onclick="updateTask(${task.id})">Editar</button>
+                            <button onclick="deleteTask(${task.id})">Borrar</button>
+                        </div>
+                    </li>`;
+            });
+        }
+
+        // CREATE (Crear tarea)
+        async function createTask() {
+            const titleInput = document.getElementById('taskTitle');
+            if(!titleInput.value) return;
+
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: titleInput.value })
+            });
+            
+            titleInput.value = '';
+            loadTasks();
+        }
+
+        // UPDATE (Actualizar tarea)
+        async function updateTask(id) {
+            const newTitle = prompt("Nuevo título para la tarea:");
+            if(!newTitle) return;
+
+            await fetch(API_URL, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id, title: newTitle })
+            });
+            loadTasks();
+        }
+
+        // DELETE (Borrar tarea)
+        async function deleteTask(id) {
+            if(!confirm("¿Seguro que quieres borrarla?")) return;
+
+            await fetch(`${API_URL}?id=${id}`, { method: 'DELETE' });
+            loadTasks();
+        }
+
+        // Iniciar
+        loadTasks();
+    </script>
+</body>
+</html>
