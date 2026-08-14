@@ -8,16 +8,16 @@ services:
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: tareas
     ports:
-      - "5432:5432" # Opcional: Expone la BD por si quieres conectarte con DBeaver/PgAdmin
+      - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data # Persistencia de datos
+      - pgdata:/var/lib/postgresql/data
 
   web:
-    build: . # Construye usando el Dockerfile de esta carpeta
+    build:
     ports:
-      - "8080:8080" # Expone la web en tu navegador
+      - "8080:8080"
     depends_on:
-      - db # Asegura que la BD intente arrancar primero
+      - db
 
 volumes:
-  pgdata: # Crea un volumen para que los datos no se borren si apagas Docker
+  pgdata:

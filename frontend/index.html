@@ -26,7 +26,6 @@
     <script>
         const API_URL = '/api/tasks';
 
-        // READ (Cargar tareas al iniciar)
         async function loadTasks() {
             const res = await fetch(API_URL);
             const tasks = await res.json() || [];
@@ -45,7 +44,6 @@
             });
         }
 
-        // CREATE (Crear tarea)
         async function createTask() {
             const titleInput = document.getElementById('taskTitle');
             if(!titleInput.value) return;
@@ -60,7 +58,6 @@
             loadTasks();
         }
 
-        // UPDATE (Actualizar tarea)
         async function updateTask(id) {
             const newTitle = prompt("Nuevo título para la tarea:");
             if(!newTitle) return;
@@ -73,7 +70,6 @@
             loadTasks();
         }
 
-        // DELETE (Borrar tarea)
         async function deleteTask(id) {
             if(!confirm("¿Seguro que quieres borrarla?")) return;
 
@@ -81,7 +77,6 @@
             loadTasks();
         }
 
-        // Iniciar
         loadTasks();
     </script>
 </body>
