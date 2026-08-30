@@ -1,23 +1,32 @@
 version: '3.8'
 
 services:
-  db:
+  db_postgres:
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: tareas
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: churn_db
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
-  web:
-    build:
+  worker_python:
+    build: ./worker_python
+    deploy:
+      replicas: 2
+    expose:
+      - "8000"
+
+  orquestador_go:
+    build: ./orquestador_go
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      - db_postgres
+    environment:
+      - GIN_MODE=release
 
 volumes:
-  pgdata:
+  postgres_data:

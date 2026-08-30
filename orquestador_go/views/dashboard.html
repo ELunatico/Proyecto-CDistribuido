@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Hiperparámetros</title>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; padding: 40px; background-color: #f8f9fa; }
+        .container { max-width: 1000px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th { background-color: #007bff; color: white; }
+        .en_cola { color: gray; }
+        .procesando { color: #f39c12; font-weight: bold; }
+        .completado { color: #28a745; font-weight: bold; }
+        .error { color: #dc3545; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard de Optimización ML</h1>
+        <p>Monitoreo del sistema distribuido de evaluación de modelos.</p>
+        <form action="/optimizar" method="POST" style="margin-bottom: 20px;">
+            <button type="submit" style="background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                🚀 Iniciar Búsqueda de Hiperparámetros
+            </button>
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tasa de Aprendizaje</th>
+                    <th>Profundidad</th>
+                    <th>Estimadores</th>
+                    <th>Worker Asignado</th>
+                    <th>Estado</th>
+                    <th>Precisión</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{ range .resultados }}
+                <tr>
+                    <td>{{ .ID }}</td>
+                    <td>{{ .TasaAprendizaje }}</td>
+                    <td>{{ .ProfundidadArbol }}</td>
+                    <td>{{ .Estimadores }}</td>
+                    <td>{{ .WorkerAsignado }}</td>
+                    <td class="{{ .Estado }}">{{ .Estado }}</td>
+                    <td>{{ .PrecisionFinal }}</td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
