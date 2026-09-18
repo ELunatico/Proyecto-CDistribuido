@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Distribuido</title>
+</head>
+<body>
+    <h1>Panel de Control de Workers</h1>
+    <button onclick="IniciarTrabajo()">Mandar tareas a los workers</button>
+    <br><br>
+    <table border="1" id="mitabla">
+        <tr>
+            <th>ID</th>
+            <th>Estado</th>
+            <th>Precisión</th>
+            <th>Worker Asignado</th>
+        </tr>
+    </table>
+
+    <script>
+        function IniciarTrabajo() {
+            fetch('http://localhost:8080/optimizar', { method: 'POST' })
+                .then(res => alert("Se mandaron las tareas al orquestador"));
+        }
+
+        function traerDatos() {
+            fetch('http://localhost:8080/')
+                .then(respuesta => respuesta.json())
+                .then(datos => {
+                    let tabla = document.getElementById("mitabla");
+                    tabla.innerHTML = "<tr><th>ID</th><th>Estado</th><th>Precisión</th><th>Worker Asignado</th></tr>";
+                    for (let i = 0; i < datos.length; i++) {
+                        let fila = "<tr>";
+                        fila += "<td>" + datos[i].ID + "</td>";
+                        fila += "<td>" + datos[i].Estado + "</td>";
+                        fila += "<td>" + datos[i].PrecisionFinal + "</td>";
+                        fila += "<td>" + datos[i].WorkerAsignado + "</td>";
+                        fila += "</tr>";
+                        tabla.innerHTML += fila;
+                    }
+                })
+                .catch(error => console.log("Todavía no hay datos o el server está apagado"));
+        }
+
+        setInterval(traerDatos, 3000);
+    </script>
+</body>
+</html>

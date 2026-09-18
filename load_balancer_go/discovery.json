@@ -1,0 +1,13 @@
+{
+    "workers": [
+      "http://worker_a1:8000",
+      "http://worker_a2:8000",
+      "http://worker_a3:8000",
+      "http://worker_b1:8000",
+      "http://worker_b2:8000",
+      "http://worker_b3:8000",
+      "http://worker_c1:8000",
+      "http://worker_c2:8000",
+      "http://worker_c3:8000"
+    ]
+  }
