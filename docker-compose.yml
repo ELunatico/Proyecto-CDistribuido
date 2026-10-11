@@ -28,8 +28,16 @@ services:
 
   frontend:
     build: ./frontend
+
+  nginx_gateway:
+    image: nginx:latest
     ports:
       - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - middleware
 
   worker_a1:
     build: ./worker_a

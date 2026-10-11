@@ -19,12 +19,12 @@
 
     <script>
         function IniciarTrabajo() {
-            fetch('http://localhost:8080/optimizar', { method: 'POST' })
+            fetch('/api/optimizar', { method: 'POST' })
                 .then(res => alert("Se mandaron las tareas al orquestador"));
         }
 
         function traerDatos() {
-            fetch('http://localhost:8080/')
+            fetch('/api/')
                 .then(respuesta => respuesta.json())
                 .then(datos => {
                     let tabla = document.getElementById("mitabla");
