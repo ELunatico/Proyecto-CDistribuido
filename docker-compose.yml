@@ -39,6 +39,13 @@ services:
     depends_on:
       - middleware
 
+  consul:
+    image: hashicorp/consul:latest
+    container_name: consul
+    ports:
+      - "8500:8500"
+    command: agent -server -bootstrap-expect=1 -ui -client=0.0.0.0
+
   worker_a1:
     build: ./worker_a
   worker_a2:
